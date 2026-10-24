@@ -8,6 +8,39 @@
 
 ---
 
+> [!IMPORTANT]
+> ### ⚠️ Ghi chú quan trọng: thiếu file `Setting/.env`
+> Nếu sau khi tải về mà **không thấy file `./Setting/.env`** (file bắt đầu bằng dấu chấm nên hay bị ẩn hoặc bị bỏ sót khi tải/giải nén), hãy **tự tạo file `.env` trong thư mục `Setting/`** với nội dung sau rồi mới chạy:
+>
+> ```env
+> PORT=6556
+>
+> # ===== GOOGLE DRIVE RIÊNG TƯ (xem HUONG-DAN-GOOGLE-DRIVE.txt) =====
+> # Mặc định tự tìm thư mục WEB-VIDEO trên Drive, trong đó có Video và img. Đổi tên thư mục gốc:
+> GDRIVE_ROOT_NAME=WEB-Video
+> # Hoặc chỉ rõ bằng ID/link (không bắt buộc):
+> # Cách 1: 1 thư mục gốc có 2 thư mục con Video và img (thiếu sẽ tự tạo)
+> GDRIVE_ROOT_FOLDER_ID=
+> # Cách 2: chỉ rõ từng thư mục
+> GDRIVE_VIDEO_FOLDER_ID=
+> GDRIVE_IMAGE_FOLDER_ID=
+> # Số giây giữa 2 lần quét Drive tìm file mới (10-3600, mặc định 30; 300 = quét mỗi 5 phút). Đang phát video thì tự bỏ qua lượt quét.
+> GDRIVE_SCAN_SECONDS=30
+> # Số ảnh xem trước (thumbnail) tải cùng lúc từ Drive (1-8, mặc định 6). KHÔNG đặt số lớn (vd 300): vượt 8 sẽ bị giảm về 8. Máy lag thì giảm xuống 3-4.
+> GDRIVE_THUMB_CONCURRENCY=8
+>
+> # ===== CHẶN TRUY CẬP LOCALHOST =====
+> # on  = chặn vào trực tiếp bằng localhost / 127.0.0.1 / IP:cổng (chỉ vào được qua tên miền Cloudflare Tunnel)
+> # off = cho truy cập bình thường (mặc định). Đổi là có hiệu lực ngay, không cần khởi động lại.
+> BLOCK_LOCALHOST=off
+> # Cloudflare Tunnel hostname
+> CLOUDFLARE_HOSTNAME=
+> ```
+>
+> Lưu ý: lưu file với tên đúng là `.env` (không phải `.env.txt`), đặt tại `Setting/.env`. Không đưa file này lên GitHub nếu bạn đã điền ID thư mục Drive.
+
+---
+
 ## 📑 Mục lục
 
 1. [Giới thiệu](#-giới-thiệu)
@@ -173,6 +206,8 @@ Video_Tool_Drive_v30/
 
 ## 🚀 Cài đặt & chạy nhanh
 
+> ⚠️ Trước khi chạy, hãy chắc chắn có file `Setting/.env`. Nếu thiếu, xem [ghi chú quan trọng ở đầu file](#️-ghi-chú-quan-trọng-thiếu-file-settingenv).
+
 ### Cách 1 — Windows, một cú click
 ```text
 Double-click  MediaPlayer.bat
@@ -267,8 +302,9 @@ Tự động hóa gồm: phát hiện kiến trúc CPU (AMD64/ARM64/x86) → t�
 | `GDRIVE_VIDEO_FOLDER_ID` | — | Chỉ rõ thư mục video |
 | `GDRIVE_IMAGE_FOLDER_ID` | — | Chỉ rõ thư mục ảnh |
 | `GDRIVE_SCAN_SECONDS` | `30` | Chu kỳ quét Drive (10–3600 giây) |
-| `GDRIVE_THUMB_CONCURRENCY` | `6` | Số thumbnail tải song song (1–8; máy lag thì giảm 3–4) |
-| `BLOCK_LOCALHOST` | — | Bật/tắt chặn truy cập trực tiếp qua localhost |
+| `GDRIVE_THUMB_CONCURRENCY` | `6` (file mẫu đặt `8`) | Số thumbnail tải song song (1–8; máy lag thì giảm 3–4) |
+| `BLOCK_LOCALHOST` | `off` | `on` = chặn truy cập bằng `localhost` / `127.0.0.1` / `IP:cổng` (chỉ vào được qua tên miền Cloudflare Tunnel); `off` = cho truy cập bình thường. Đổi là có hiệu lực ngay, không cần khởi động lại |
+| `CLOUDFLARE_HOSTNAME` | — | Hostname của Cloudflare Tunnel (VD `media.tenmien.com`) |
 
 Biến nâng cao (đọc từ môi trường): `MP_ROOT`, `MP_FFMPEG_URL`, `MP_NO_FFMPEG_DL`, `MP_VERBOSE`.
 
