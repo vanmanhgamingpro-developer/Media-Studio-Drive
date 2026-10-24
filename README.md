@@ -1,8 +1,8 @@
-# 🎬 Media Studio (MediaPlayer) — Video Tool Drive v30
+# 🎬 Media Studio (MediaPlayer) — Video Tool Drive
 
 > Web phát **video & ảnh riêng tư** lấy trực tiếp từ **Google Drive**, chạy bằng **Node.js thuần (không cần `npm install`)**, kèm **Cloudflare Tunnel** để public ra internet bằng tên miền riêng — không cần mở port, không cần IP tĩnh.
 
-**Chủ sở hữu / Tác giả:** [@vanmanhgaming](https://github.com/vanmanhgaming)
+**Chủ sở hữu / Tác giả:** [@vanmanhgaming](https://github.com/vanmanhgamingpro-developer)
 **Phiên bản gói:** `Video_Tool_Drive_v30` · **Package:** `web-media-player` `2.1.8`
 **Ngôn ngữ giao diện:** Tiếng Việt 🇻🇳
 
@@ -413,11 +413,22 @@ node_modules/
 
 | | |
 |---|---|
-| **Chủ sở hữu** | **@vanmanhgaming** |
 | **Dự án** | Media Studio / MediaPlayer — Video Tool Drive |
 | **Phiên bản** | v30 (package `2.1.8`) |
 | **Giấy phép** | *Chưa khai báo* — thêm file `LICENSE` (MIT, Apache-2.0, hoặc "All rights reserved") theo ý muốn của chủ sở hữu |
 
+### 📇 Thông tin chủ sở hữu
+
+* **Tên:** vanmanhgaming
+* **Quốc gia:** Việt Nam 🇻🇳
+* **Múi giờ:** UTC+07:00
+* **Email:** [vanmanhgamingpro@gmail.com](mailto:vanmanhgamingpro@gmail.com)
+* **Website:** [vmmc.io.vn](https://vmmc.io.vn/)
+* **Facebook:** [fb.com/vmgpro.vmmc.io.vn](https://fb.com/vmgpro.vmmc.io.vn)
+* **GitHub:** [vanmanhgamingpro-developer](https://github.com/vanmanhgamingpro-developer)
+* **YouTube:** [@vanmanhgaming](https://www.youtube.com/@vanmanhgaming)
+* **Discord:** [discord.com/users/1118923892732477691](https://discord.com/users/1118923892732477691)
+
 © 2026 **@vanmanhgaming**. Mọi quyền được bảo lưu trừ khi có giấy phép khác đi kèm.
 
-Mọi đóng góp, báo lỗi hoặc đề xuất tính năng vui lòng liên hệ trực tiếp **@vanmanhgaming**.
+Mọi đóng góp, báo lỗi hoặc đề xuất tính năng vui lòng liên hệ trực tiếp **@vanmanhgaming** qua các kênh trên.
