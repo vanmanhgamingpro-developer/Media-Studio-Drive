@@ -1,0 +1,13 @@
+{
+  "main": "C:\\Users\\vanmanhgaming\\Documents\\Dự án mặc định\\Setting\\js\\server.js",
+  "output": "C:\\Users\\vanmanhgaming\\Documents\\Dự án mặc định\\bin\\sea.blob",
+  "disableExperimentalSEAWarning": true,
+  "useCodeCache": false,
+  "assets": {
+    "index.html": "C:\\Users\\vanmanhgaming\\Documents\\Dự án mặc định\\public\\index.html",
+    "app.js": "C:\\Users\\vanmanhgaming\\Documents\\Dự án mặc định\\public\\app.js",
+    "style.css": "C:\\Users\\vanmanhgaming\\Documents\\Dự án mặc định\\public\\style.css",
+    "guard.js": "C:\\Users\\vanmanhgaming\\Documents\\Dự án mặc định\\public\\guard.js",
+    "tray.ps1": "C:\\Users\\vanmanhgaming\\Documents\\Dự án mặc định\\Setting\\ps1\\tray.ps1"
+  }
+}

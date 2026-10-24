@@ -1,0 +1,48 @@
+# Phát video/ảnh từ Google Drive RIÊNG TƯ
+
+Drive của bạn (riêng tư)          Máy chủ MediaPlayer                 Website
+  Video/  q8x7k2m9, 91ac03f...  →  quét danh sách, lấy thông tin  →  hiện tất cả, tìm kiếm,
+  img/    r4nd0m1, 03e9c3f...      phát qua máy chủ (có tua)           bấm để phát
+
+- File trên Drive CÓ THỂ đặt TÊN NGẪU NHIÊN, không cần đuôi .mp4/.jpg (nhận theo loại file của Drive).
+- Link Drive và token KHÔNG bao giờ gửi cho trình duyệt: mọi video/ảnh đều phát qua máy chủ.
+- Tiêu đề hiện trên web: lấy từ dòng đầu của "Mô tả" (Chi tiết → Mô tả) của file trên Drive;
+  nếu để trống thì dùng tên file. Tải lên bằng web (Admin) → tên file Drive ngẫu nhiên, tên gốc nằm trong Mô tả.
+- Thư mục con bên trong Video/ và img/ cũng được quét.
+- CHỈ DÙNG DRIVE: chương trình KHÔNG đọc video/ảnh trên máy nữa. Chưa có file JSON hợp lệ → web để trống và hiện lý do (cũng ghi trong data\logs\server.log).
+- Thư mục tìm theo tên (không phân biệt hoa/thường) trong "Drive của tôi": WEB-Video\Video và WEB-Video\img.
+
+## Bước 1 — Tạo thư mục trên Drive
+Cấu trúc:  WEB-Video/Video (video)  và  WEB-Video/img (ảnh).
+Không cần điền gì: web tự tìm thư mục tên WEB-Video (đổi tên bằng GDRIVE_ROOT_NAME trong Setting\.env).
+Thư mục phải thuộc Drive của tài khoản đăng nhập (hoặc được chia sẻ cho nó). Nếu có nhiều thư mục trùng tên, dán link vào GDRIVE_ROOT_FOLDER_ID.
+(Muốn chỉ rõ từng thư mục: dùng GDRIVE_VIDEO_FOLDER_ID và GDRIVE_IMAGE_FOLDER_ID.)
+
+## Bước 2 — Cho MediaPlayer quyền vào Drive (chọn A hoặc B)
+Vào https://console.cloud.google.com → tạo Project → "APIs & Services" → Library → bật "Google Drive API".
+
+A) ĐĂNG NHẬP BẰNG TÀI KHOẢN CỦA BẠN (khuyên dùng — xem, tải lên và xoá đều được)
+   1. APIs & Services → OAuth consent screen: chọn External, điền tên app + email của bạn.
+      Bấm "Publish app" (In production) để đăng nhập không bị hết hạn sau 7 ngày. (App dùng riêng, không cần xác minh;
+      khi đăng nhập chọn "Nâng cao → Tiếp tục".)
+   2. Credentials → Create credentials → OAuth client ID → loại "Desktop app" → tải file JSON,
+      đổi tên (hoặc để nguyên tên client_secret_....json) và bỏ vào Setting\drive\
+   3. Double-click Setting\Drive-Login.cmd → đăng nhập, bấm Cho phép → tạo Setting\drive\oauth.json.
+
+B) SERVICE ACCOUNT (không cần đăng nhập, nhưng chỉ XEM/PHÁT được; tải lên từ web sẽ báo lỗi
+   vì service account không có dung lượng Drive)
+   1. Credentials → Create credentials → Service account → tab Keys → Add key → JSON.
+   2. Lưu file thành Setting\drive\service-account.json
+   3. Trên Drive: chia sẻ thư mục gốc cho email của service account (…@….iam.gserviceaccount.com) với quyền Người xem.
+
+## Bước 3 — Chạy
+Chạy lại MediaPlayer.bat. Log (data\logs\server.log) hiện dòng "Google Drive: BẬT". Quét lại Drive mỗi 30 giây (đổi bằng GDRIVE_SCAN_SECONDS);
+nút Quét lại trong Admin quét ngay.
+
+## Lưu ý
+- Video nên là MP4 (H.264 + AAC) để trình duyệt phát được. Ở chế độ Drive, web KHÔNG tự chuyển đổi codec
+  (MKV/AVI... sẽ bị đánh dấu không phát được) — hãy chuyển sang MP4 rồi tải lên lại.
+- Xoá từ web = chuyển vào Thùng rác Drive (khôi phục được).
+- Có ffmpeg (tự tải như cũ) thì web đọc codec thật của video từ Drive để cảnh báo sớm; không có vẫn chạy bình thường.
+- Mỗi lượt xem video dùng băng thông tải xuống của Drive; file được chia sẻ công khai nhiều người xem có thể bị Google giới hạn.
+- bin\MediaPlayer.exe cũ được build từ code cũ — nếu dùng exe, build lại: node Setting\js\build.js

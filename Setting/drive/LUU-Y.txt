@@ -1,0 +1,1 @@
+Đặt service-account.json hoặc oauth.json vào thư mục này (xem HUONG-DAN-GOOGLE-DRIVE.txt). KHÔNG chia sẻ các file này.

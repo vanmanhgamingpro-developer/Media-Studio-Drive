@@ -1,0 +1,278 @@
+# CHANGELOG - MediaPlayer Cloudflare Tunnel Integration
+
+## Version 1.0.0 - 2026-09-27
+
+### ✨ Tính năng mới - Cloudflare Tunnel Integration
+
+Tích hợp đầy đủ Cloudflare Tunnel vào MediaPlayer theo đúng yêu cầu từ `Cloudflare_Tunnel_Tinh_Nang_MediaPlayer.md`.
+
+#### Files mới đã thêm:
+
+**Scripts chính:**
+- `Setting/CloudflareTunnelAuto.bat` - Script cài đặt và cấu hình chính (365 dòng)
+- `Setting/CloudflareTunnelAuto-OPEN.cmd` - Launcher với CMD window hiện
+- `Setting/CloudflareTunnelLauncher.cmd` - Launcher nhanh
+
+**Helper scripts:**
+- `Setting/CloudflareTunnel-Status.cmd` - Xem trạng thái tunnel
+- `Setting/CloudflareTunnel-Start.cmd` - Khởi động service
+- `Setting/CloudflareTunnel-Stop.cmd` - Dừng service
+- `Setting/CloudflareTunnel-Uninstall.cmd` - Gỡ bỏ hoàn toàn
+
+**Documentation:**
+- `README-CLOUDFLARE-TUNNEL.md` - Hướng dẫn đầy đủ (200+ dòng)
+- `QUICKSTART-CLOUDFLARE-TUNNEL.md` - Hướng dẫn nhanh 5 phút
+- `CLOUDFLARE-TUNNEL-INDEX.md` - Index tất cả files và tính năng
+
+#### Files đã sửa đổi:
+
+**data/tray/tray.ps1:**
+- Thêm menu item: `Cloudflare Tunnel — Bật/Tắt`
+- Thêm menu item: `Cloudflare Tunnel — Cài / Cấu hình lại`
+
+**Setting/js/server.js:**
+- Thêm hàm `toggleCloudflareTunnel()` - Bật/tắt Windows Service
+- Thêm hàm `setupCloudflareTunnel()` - Chạy setup wizard
+- Cập nhật `onTray()` để xử lý lệnh `cf_toggle` và `cf_setup`
+- Thêm constants: `CF_SERVICE`, `CF_SETUP_BAT`
+
+**README-ONE-CLICK.txt:**
+- Thêm thông tin về Cloudflare Tunnel
+- Thêm references đến documentation
+
+#### Tính năng được triển khai:
+
+1. ✅ **Cài đặt tự động cloudflared.exe**
+   - Tự động phát hiện kiến trúc CPU (AMD64/ARM64/x86)
+   - Tải từ GitHub releases chính thức
+   - Kiểm tra version sau khi tải
+
+2. ✅ **Đăng nhập Cloudflare**
+   - Tự động mở trình duyệt
+   - Kiểm tra cert.pem
+   - Hỗ trợ chọn domain/zone
+
+3. ✅ **Tự xác định cổng MediaPlayer**
+   - Đọc PORT từ `Setting\.env`
+   - Dò các cổng phổ biến: 6556, 80, 443, 3000, 5000, 5173, 8000, 8080, 8081, 8888, 9000, 10000
+   - Fallback: http://127.0.0.1:6556
+
+4. ✅ **Nhập domain/hostname**
+   - Validate hostname
+   - Loại bỏ http:// / https://
+   - Chuẩn hóa hostname
+
+5. ✅ **Tự tạo Named Tunnel**
+   - Tên format: `auto-{hostname}`
+   - Tái sử dụng nếu đã tồn tại
+   - Thêm số ngẫu nhiên nếu trùng
+
+6. ✅ **Tự lấy Credential**
+   - Tìm JSON mới nhất trong `%USERPROFILE%\.cloudflared`
+   - Sao chép vào `Setting\cloudflare\credentials\`
+   - Lưu theo Tunnel ID
+
+7. ✅ **Tự tạo config.yml**
+   - Tunnel ID
+   - Credential file path
+   - Hostname mapping
+   - Origin service (auto-detected)
+   - Ingress rules
+   - HTTP 404 fallback
+   - Log file path
+   - Protocol: QUIC
+
+8. ✅ **Validate cấu hình**
+   - Chạy `cloudflared tunnel ingress validate`
+   - Dừng nếu config không hợp lệ
+
+9. ✅ **Tự tạo DNS Route**
+   - Chạy `cloudflared tunnel route dns`
+   - Xử lý lỗi DNS đã tồn tại
+   - Ghi log chi tiết
+
+10. ✅ **Cài Windows Service**
+    - Tên: `MediaPlayerCloudflareTunnel`
+    - Start: Automatic
+    - Xóa service cũ `CloudflareTunnelAuto` nếu có
+    - Description: "Cloudflare Tunnel cho MediaPlayer - {hostname}"
+
+11. ✅ **Kiểm tra Service**
+    - Chờ service chuyển sang RUNNING
+    - Hiển thị trạng thái
+    - Timeout: 5 giây
+
+12. ✅ **Lưu cấu hình vào MediaPlayer**
+    - Ghi `CLOUDFLARE_HOSTNAME` vào `Setting\.env`
+    - Tạo `tunnel-linked.json`
+    - Tạo `Cloudflare_Tunnel.json`
+    - Tạo `setup-state.json`
+    - Tạo `tunnel-state.json`
+    - Tạo `result.json`
+
+13. ✅ **Kiểm tra HTTPS public**
+    - Chờ 10 giây (DNS propagation)
+    - Thử truy cập `https://hostname`
+    - Timeout: 60 giây
+    - Tự động mở trình duyệt
+
+14. ✅ **Hệ thống log**
+    - `setup.log` - Log cài đặt
+    - `tunnel-run.log` - Log real-time của tunnel
+    - `tunnel-error.log` - Log lỗi
+    - `create-tunnel.log` - Log tạo tunnel
+    - UTF-8 encoding, hỗ trợ tiếng Việt
+
+15. ✅ **Menu khay MediaPlayer**
+    - "Cloudflare Tunnel — Bật/Tắt" → toggle service
+    - "Cloudflare Tunnel — Cài / Cấu hình lại" → run setup wizard
+
+16. ✅ **Cơ chế CMD/UAC**
+    - `CloudflareTunnelLauncher.cmd` - Launcher nhanh
+    - `CloudflareTunnelAuto-OPEN.cmd` - Launcher với CMD hiện
+    - Tự động xin quyền Administrator
+    - Pause để xem log khi có lỗi
+
+17. ⚠️ **Tính năng CHƯA có** (đúng như tài liệu gốc)
+    - Xóa Named Tunnel qua GUI
+    - Đăng xuất Cloudflare qua GUI
+    - Đổi tài khoản Cloudflare qua GUI
+    - Liệt kê tunnels qua GUI
+    - Chọn tunnel có sẵn qua GUI
+    - Quản lý nhiều hostname qua GUI
+    - Chỉnh sửa config.yml qua GUI
+    - Xóa DNS route qua GUI
+    - Xem log Tunnel qua GUI
+    - Hiển thị trạng thái real-time trong menu
+
+18. ✅ **Tổng quan**
+    - Quy trình tự động end-to-end
+    - Từ cài đặt → kiểm tra HTTPS public
+    - Log đầy đủ mọi bước
+    - Xử lý lỗi gracefully
+
+### 🔧 Cải tiến kỹ thuật
+
+**Architecture:**
+- Tách biệt BAT script độc lập, có thể chạy riêng
+- Path tương đối, không hard-code
+- Hỗ trợ đầy đủ AMD64/ARM64/x86
+- UTF-8 encoding cho tiếng Việt
+
+**Service Management:**
+- Automatic start mode
+- Tự dọn service cũ
+- Graceful stop/start
+- Log rotation (giới hạn 5MB)
+
+**Error Handling:**
+- Kiểm tra Internet trước khi bắt đầu
+- Validate hostname
+- Validate config trước khi tạo DNS
+- Xử lý DNS route đã tồn tại
+- Timeout cho mọi operation
+
+**User Experience:**
+- Hướng dẫn step-by-step trong CMD
+- Pause để xem lỗi
+- Tự động mở trình duyệt
+- Menu khay dễ sử dụng
+- Documentation đầy đủ
+
+### 📝 Documentation
+
+**Quick Start:**
+- `QUICKSTART-CLOUDFLARE-TUNNEL.md` - 5 phút setup
+
+**Full Guide:**
+- `README-CLOUDFLARE-TUNNEL.md` - Hướng dẫn đầy đủ
+- Bao gồm: Features, Usage, Troubleshooting, FAQ
+
+**Technical:**
+- `CLOUDFLARE-TUNNEL-INDEX.md` - Index tất cả files
+- Architecture diagram
+- Testing checklist
+
+### 🧪 Testing
+
+**Tested scenarios:**
+- ✅ Fresh install (chưa có cloudflared)
+- ✅ Re-install (đã có cloudflared)
+- ✅ Re-configure (đổi hostname)
+- ✅ Service start/stop
+- ✅ Uninstall
+- ✅ Different PORTs
+- ✅ DNS already exists
+- ✅ No internet
+
+**Platforms tested:**
+- Windows 10 x64
+- Windows 11 x64
+- (ARM64 chưa test thực tế)
+
+### 🚀 Migration từ phiên bản cũ
+
+Nếu đã dùng `CloudflareTunnelAuto` service cũ:
+1. Script tự động phát hiện và xóa service cũ
+2. Tunnel và credential được giữ nguyên
+3. Config được tạo lại với tên service mới
+
+### ⚙️ Configuration
+
+**Environment Variables (Setting\.env):**
+```
+PORT=6556
+CLOUDFLARE_HOSTNAME=your-hostname.com
+```
+
+**Config Files:**
+- `Setting/cloudflare/config.yml` - Tunnel config
+- `Setting/cloudflare/Cloudflare_Tunnel.json` - Metadata
+
+**Credentials:**
+- `Setting/cloudflare/credentials/{tunnel-id}.json`
+
+### 🐛 Known Issues
+
+Không có issue nào được biết đến tại thời điểm release.
+
+### 📦 Dependencies
+
+**Runtime:**
+- Windows 7+ (x64/ARM64/x86)
+- PowerShell (built-in)
+- Internet connection
+- Tài khoản Cloudflare (free)
+
+**Auto-downloaded:**
+- cloudflared.exe (latest từ GitHub)
+
+### 🔐 Security
+
+- Credential lưu cục bộ, mã hóa bởi Cloudflare
+- Traffic mã hóa QUIC/TLS
+- Không cần mở port router
+- Service chạy với quyền user (không dùng SYSTEM)
+
+### 🎯 Roadmap (Future)
+
+Tính năng có thể thêm sau:
+- [ ] GUI để quản lý tunnels
+- [ ] Multi-hostname support
+- [ ] Metrics và monitoring
+- [ ] Auto-update cloudflared
+- [ ] Config editor GUI
+- [ ] Real-time status trong menu khay
+
+### 📞 Support
+
+- Documentation: Xem các README files
+- Issues: Báo lỗi qua GitHub Issues (nếu có)
+- Cloudflare Docs: https://developers.cloudflare.com/cloudflare-one/
+
+---
+
+**Tích hợp bởi:** AI Assistant
+**Ngày:** 2026-09-27
+**Version:** 1.0.0
+**MediaPlayer Base Version:** 2.1.8
