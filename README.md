@@ -451,7 +451,7 @@ node_modules/
 |---|---|
 | **Dự án** | Media Studio / MediaPlayer — Video Tool Drive |
 | **Phiên bản** | v30 (package `2.1.8`) |
-| **Giấy phép** | *Chưa khai báo* — thêm file `LICENSE` (MIT, Apache-2.0, hoặc "All rights reserved") theo ý muốn của chủ sở hữu |
+| **Giấy phép** | [MIT](LICENSE) |
 
 ### 📇 Thông tin chủ sở hữu
 
@@ -465,6 +465,6 @@ node_modules/
 * **YouTube:** [@vanmanhgaming](https://www.youtube.com/@vanmanhgaming)
 * **Discord:** [discord.com/users/1118923892732477691](https://discord.com/users/1118923892732477691)
 
-© 2026 **@vanmanhgaming**. Mọi quyền được bảo lưu trừ khi có giấy phép khác đi kèm.
+© 2026 **@vanmanhgaming**. Phát hành theo giấy phép [MIT](LICENSE).
 
 Mọi đóng góp, báo lỗi hoặc đề xuất tính năng vui lòng liên hệ trực tiếp **@vanmanhgaming** qua các kênh trên.
